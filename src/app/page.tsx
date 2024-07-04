@@ -1,113 +1,344 @@
-import Image from "next/image";
+'use client'
 
-export default function Home() {
-  return (
-    <main className="flex min-h-screen flex-col items-center justify-between p-24">
-      <div className="z-10 w-full max-w-5xl items-center justify-between font-mono text-sm lg:flex">
-        <p className="fixed left-0 top-0 flex w-full justify-center border-b border-gray-300 bg-gradient-to-b from-zinc-200 pb-6 pt-8 backdrop-blur-2xl dark:border-neutral-800 dark:bg-zinc-800/30 dark:from-inherit lg:static lg:w-auto  lg:rounded-xl lg:border lg:bg-gray-200 lg:p-4 lg:dark:bg-zinc-800/30">
-          Get started by editing&nbsp;
-          <code className="font-mono font-bold">src/app/page.tsx</code>
-        </p>
-        <div className="fixed bottom-0 left-0 flex h-48 w-full items-end justify-center bg-gradient-to-t from-white via-white dark:from-black dark:via-black lg:static lg:size-auto lg:bg-none">
-          <a
-            className="pointer-events-none flex place-items-center gap-2 p-8 lg:pointer-events-auto lg:p-0"
-            href="https://vercel.com?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            By{" "}
-            <Image
-              src="/vercel.svg"
-              alt="Vercel Logo"
-              className="dark:invert"
-              width={100}
-              height={24}
-              priority
-            />
-          </a>
-        </div>
-      </div>
+import React, { useState, useEffect } from 'react';
+import { BarChart, Bar, XAxis, YAxis, Tooltip, Legend, ResponsiveContainer, Cell } from 'recharts';
+import { RefreshCcw, AlertTriangle, CheckCircle, Moon, Sun, Home, Newspaper, Tv } from 'lucide-react';
+import ClientTime from './components/ClientTime';
+import HistoricalComparison from './components/HistoricalComparison';
+import KeyConstituencies from './components/KeyConstituencies';
 
-      <div className="relative z-[-1] flex place-items-center before:absolute before:h-[300px] before:w-full before:-translate-x-1/2 before:rounded-full before:bg-gradient-radial before:from-white before:to-transparent before:blur-2xl before:content-[''] after:absolute after:-z-20 after:h-[180px] after:w-full after:translate-x-1/3 after:bg-gradient-conic after:from-sky-200 after:via-blue-200 after:blur-2xl after:content-[''] before:dark:bg-gradient-to-br before:dark:from-transparent before:dark:to-blue-700 before:dark:opacity-10 after:dark:from-sky-900 after:dark:via-[#0141ff] after:dark:opacity-40 sm:before:w-[480px] sm:after:w-[240px] before:lg:h-[360px]">
-        <Image
-          className="relative dark:drop-shadow-[0_0_0.3rem_#ffffff70] dark:invert"
-          src="/next.svg"
-          alt="Next.js Logo"
-          width={180}
-          height={37}
-          priority
-        />
-      </div>
-
-      <div className="mb-32 grid text-center lg:mb-0 lg:w-full lg:max-w-5xl lg:grid-cols-4 lg:text-left">
-        <a
-          href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className="mb-3 text-2xl font-semibold">
-            Docs{" "}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className="m-0 max-w-[30ch] text-sm opacity-50">
-            Find in-depth information about Next.js features and API.
-          </p>
-        </a>
-
-        <a
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className="mb-3 text-2xl font-semibold">
-            Learn{" "}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className="m-0 max-w-[30ch] text-sm opacity-50">
-            Learn about Next.js in an interactive course with&nbsp;quizzes!
-          </p>
-        </a>
-
-        <a
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className="mb-3 text-2xl font-semibold">
-            Templates{" "}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className="m-0 max-w-[30ch] text-sm opacity-50">
-            Explore starter templates for Next.js.
-          </p>
-        </a>
-
-        <a
-          href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className="mb-3 text-2xl font-semibold">
-            Deploy{" "}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className="m-0 max-w-[30ch] text-balance text-sm opacity-50">
-            Instantly deploy your Next.js site to a shareable URL with Vercel.
-          </p>
-        </a>
-      </div>
-    </main>
-  );
+// Type definitions
+interface Seats {
+  Lab: number;
+  Con: number;
+  LDem: number;
+  SNP: number;
+  Reform: number;
+  Plaid: number;
+  Green: number;
 }
+
+interface KeyEvent {
+  time: string;
+  event: string;
+}
+
+interface NewsItem {
+  title: string;
+  link: string;
+  pubDate: string;
+  description: string;
+}
+
+interface Projection {
+  min: number;
+  max: number;
+  projected: number;
+}
+
+interface Projections {
+  [key: string]: Projection;
+}
+
+const liveStreams = [
+  { name: "Sky News", url: "https://www.youtube.com/embed/oJUvTVdTMyY" },
+  { name: "ITV News", url: "https://www.youtube.com/embed/Xu9DdrBCopA" },
+  { name: "TalkTV", url: "https://www.youtube.com/embed/DFYaNjzI1aI" },
+  { name: "GBNews", url: "https://www.youtube.com/embed/8WX6YL9JnLw" }
+];
+
+// Colour map for each party
+const partyColours: { [key: string]: string } = {
+  Lab: '#DC241f',
+  Con: '#0087DC',
+  LDem: '#FDBB30',
+  SNP: '#FDF38E',
+  Reform: '#12B2B5',
+  Plaid: '#3F8428',
+  Green: '#6AB023'
+};
+
+const ElectionTracker: React.FC = () => {
+  const [seats, setSeats] = useState<Seats>({
+    Lab: 0,
+    Con: 0,
+    LDem: 0,
+    SNP: 0,
+    Reform: 0,
+    Plaid: 0,
+    Green: 0
+  });
+  const [keyEvents, setKeyEvents] = useState<KeyEvent[]>([]);
+  const [newsFeed, setNewsFeed] = useState<NewsItem[]>([]);
+  const [newsError, setNewsError] = useState<string | null>(null);
+  const [darkMode, setDarkMode] = useState<boolean>(false);
+  const [lastUpdated, setLastUpdated] = useState<string>(new Date().toISOString());
+  const [activeTab, setActiveTab] = useState<'results' | 'news' | 'live'>('results');
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await fetch('/api/live-results');
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        const data = await response.json();
+        setSeats(data.seats);
+        setLastUpdated(data.lastUpdated);
+      } catch (error) {
+        console.error('Error fetching live results:', error);
+      }
+    };
+
+    fetchData();
+    const interval = setInterval(fetchData, 60000); // Fetch every minute
+
+    return () => clearInterval(interval);
+  }, []);
+
+  const toggleDarkMode = () => setDarkMode(!darkMode);
+
+  const addKeyEvent = (event: string) => {
+    setKeyEvents(prev => [...prev, { time: new Date().toLocaleTimeString(), event }]);
+  };
+
+  const fetchNews = async () => {
+    try {
+      const response = await fetch('/api/fetchNews');
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      const data: NewsItem[] = await response.json();
+      setNewsFeed(data);
+      setNewsError(null);
+    } catch (error) {
+      console.error('Error fetching news:', error);
+      setNewsError("Failed to fetch news. Please try again later.");
+    }
+  };
+
+  const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = event.target;
+    setSeats(prevSeats => ({
+      ...prevSeats,
+      [name]: parseInt(value, 10) || 0,
+    }));
+    setLastUpdated(new Date().toISOString());
+  };
+
+  const projections: Projections = {
+    Lab: { min: 447, max: 517, projected: 484 },
+    Con: { min: 34, max: 99, projected: 64 },
+    LDem: { min: 49, max: 73, projected: 61 },
+    SNP: { min: 3, max: 21, projected: 10 },
+    Reform: { min: 1, max: 16, projected: 7 },
+    Plaid: { min: 1, max: 6, projected: 3 },
+    Green: { min: 1, max: 6, projected: 3 }
+  };
+
+  return (
+    <div className={`min-h-screen ${darkMode ? 'dark' : ''}`}>
+      <div className="p-4 max-w-7xl mx-auto bg-gray-100 dark:bg-gray-900 min-h-screen">
+        <header className="bg-white dark:bg-gray-800 p-4 rounded-lg shadow mb-6 flex items-center justify-between">
+          <h1 className="text-3xl font-bold text-blue-800 dark:text-blue-300">UK Election Night 2024</h1>
+          <div className="flex items-center space-x-4">
+            <ClientTime />
+            <button onClick={toggleDarkMode} className="p-2 rounded-full bg-gray-200 dark:bg-gray-700">
+              {darkMode ? <Sun className="text-yellow-400" /> : <Moon className="text-gray-700" />}
+            </button>
+          </div>
+        </header>
+
+        <div className="mb-6 flex space-x-2">
+          <button
+            onClick={() => setActiveTab('results')}
+            className={`flex items-center px-4 py-2 rounded-t-lg ${
+              activeTab === 'results'
+                ? 'bg-white dark:bg-gray-800 text-blue-600 dark:text-blue-300'
+                : 'bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300'
+            }`}
+          >
+            <Home className="mr-2" size={18} />
+            Results
+          </button>
+          <button
+            onClick={() => setActiveTab('news')}
+            className={`flex items-center px-4 py-2 rounded-t-lg ${
+              activeTab === 'news'
+                ? 'bg-white dark:bg-gray-800 text-blue-600 dark:text-blue-300'
+                : 'bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300'
+            }`}
+          >
+            <Newspaper className="mr-2" size={18} />
+            News Feed
+          </button>
+          <button
+            onClick={() => setActiveTab('live')}
+            className={`flex items-center px-4 py-2 rounded-t-lg ${
+              activeTab === 'live'
+                ? 'bg-white dark:bg-gray-800 text-blue-600 dark:text-blue-300'
+                : 'bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300'
+            }`}
+          >
+            <Tv className="mr-2" size={18} />
+            Live Streams
+          </button>
+        </div>
+
+        {activeTab === 'results' && (
+          <main className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <section className="bg-white dark:bg-gray-800 p-4 rounded-lg shadow">
+              <h2 className="text-xl font-semibold mb-4 text-blue-800 dark:text-blue-300">Current Results</h2>
+              <ResponsiveContainer width="100%" height={300}>
+                <BarChart data={Object.entries(seats).map(([name, value]) => ({ name, value }))}>
+                  <XAxis dataKey="name" />
+                  <YAxis />
+                  <Tooltip />
+                  <Legend />
+                  <Bar dataKey="value">
+                    {Object.entries(seats).map(([name]) => (
+                      <Cell key={name} fill={partyColours[name]} />
+                    ))}
+                  </Bar>
+                </BarChart>
+              </ResponsiveContainer>
+              <p className="mt-2 text-sm text-gray-600 dark:text-gray-400">
+                Last updated: {new Date(lastUpdated).toLocaleString()}
+              </p>
+            </section>
+
+            <section className="bg-white dark:bg-gray-800 p-4 rounded-lg shadow">
+             
+            <h2 className="text-xl font-semibold mb-4 text-blue-800 dark:text-blue-300">Add Seats</h2>
+              <div className="grid grid-cols-2 gap-4">
+                {Object.keys(seats).map((party) => (
+                  <div key={party} className="flex flex-col">
+                    <label className="block text-gray-700 dark:text-gray-300 mb-1">{party}</label>
+                    <input
+                      type="number"
+                      name={party}
+                      value={seats[party as keyof Seats]}
+                      onChange={handleInputChange}
+                      className="p-2 border rounded"
+                    />
+                  </div>
+                ))}
+              </div>
+            </section>
+
+            <section className="bg-white dark:bg-gray-800 p-4 rounded-lg shadow">
+              <HistoricalComparison />
+            </section>
+
+            <section className="bg-white dark:bg-gray-800 p-4 rounded-lg shadow">
+              <KeyConstituencies />
+            </section>
+
+            <section className="bg-white dark:bg-gray-800 p-4 rounded-lg shadow">
+              <h2 className="text-xl font-semibold mb-4 text-blue-800 dark:text-blue-300">Key Events</h2>
+              <input
+                type="text"
+                placeholder="Add key event..."
+                onKeyPress={(e: React.KeyboardEvent<HTMLInputElement>) => {
+                  if (e.key === 'Enter') {
+                    addKeyEvent((e.target as HTMLInputElement).value);
+                    (e.target as HTMLInputElement).value = '';
+                  }
+                }}
+                className="w-full p-2 border rounded mb-4 dark:bg-gray-700 dark:text-white dark:border-gray-600"
+              />
+              <ul className="list-disc pl-5 max-h-64 overflow-y-auto dark:text-white">
+                {keyEvents.map((event, index) => (
+                  <li key={index} className="mb-2">
+                    <span className="font-semibold">{event.time}:</span> {event.event}
+                  </li>
+                ))}
+              </ul>
+            </section>
+
+            <section className="bg-white dark:bg-gray-800 p-4 rounded-lg shadow">
+              <h2 className="text-xl font-semibold mb-4 text-blue-800 dark:text-blue-300">Projections vs. Results</h2>
+              <div className="grid grid-cols-2 gap-4">
+                {Object.entries(projections).map(([party, proj]) => (
+                  <div key={party} className="bg-gray-100 dark:bg-gray-700 p-3 rounded">
+                    <h3 className="font-semibold text-lg dark:text-white">{party}</h3>
+                    <div className="flex flex-col dark:text-gray-300">
+                      <span>Projected: {proj.projected}</span>
+                      <span>Current: {seats[party as keyof Seats]}</span>
+                      <span className="flex items-center mt-2">
+                        Status: 
+                        {seats[party as keyof Seats] >= proj.min && seats[party as keyof Seats] <= proj.max ? (
+                          <CheckCircle className="text-green-500 ml-2" />
+                        ) : (
+                          <AlertTriangle className="text-yellow-500 ml-2" />
+                        )}
+                      </span>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </section>
+          </main>
+        )}
+
+        {activeTab === 'news' && (
+          <div className="bg-white dark:bg-gray-800 p-4 rounded-lg shadow">
+            <div className="flex justify-between items-center mb-4">
+              <h2 className="text-xl font-semibold text-blue-800 dark:text-blue-300">Live News Feed</h2>
+              <button 
+                onClick={fetchNews} 
+                className="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition-colors flex items-center"
+              >
+                <RefreshCcw className="w-4 h-4 mr-2" />
+                Refresh News
+              </button>
+            </div>
+            {newsError ? (
+              <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative" role="alert">
+                <strong className="font-bold">Error!</strong>
+                <span className="block sm:inline"> {newsError}</span>
+              </div>
+            ) : (
+              <ul className="space-y-4">
+                {newsFeed.map((item, index) => (
+                  <li key={index} className="border-b border-gray-200 dark:border-gray-700 pb-4">
+                    <a href={item.link} target="_blank" rel="noopener noreferrer" className="text-blue-600 dark:text-blue-400 hover:underline text-lg font-semibold">
+                      {item.title}
+                    </a>
+                    <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">{new Date(item.pubDate).toLocaleString()}</p>
+                    <p className="mt-2 dark:text-gray-300">{item.description.replace(/<[^>]*>?/gm, '').slice(0, 150)}...</p>
+                  </li>
+                ))}
+              </ul>
+            )}
+          </div>
+        )}
+
+        {activeTab === 'live' && (
+          <div className="bg-white dark:bg-gray-800 p-4 rounded-lg shadow">
+            <h2 className="text-xl font-semibold mb-4 text-blue-800 dark:text-blue-300">Live Broadcasts</h2>
+            <div className="space-y-4">
+              {liveStreams.map((stream) => (
+                <div key={stream.name} className="relative aspect-w-16 aspect-h-9 overflow-hidden rounded-lg">
+                  <iframe
+                    src={stream.url}
+                    title={`${stream.name} Live Stream`}
+                    frameBorder="0"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                    allowFullScreen
+                    className="absolute top-0 left-0 w-full h-full"
+                  ></iframe>
+                  <div className="absolute bottom-0 left-0 bg-black bg-opacity-50 text-white p-2">
+                    {stream.name}
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+      </div>
+    </div>
+  );
+};
+
+export default ElectionTracker;

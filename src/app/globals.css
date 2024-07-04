@@ -1,18 +1,20 @@
+/* globals.css */
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
+/* Additional custom styles */
 :root {
   --foreground-rgb: 0, 0, 0;
   --background-start-rgb: 214, 219, 220;
   --background-end-rgb: 255, 255, 255;
 }
 
+/* Dark mode support */
 @media (prefers-color-scheme: dark) {
-  :root {
-    --foreground-rgb: 255, 255, 255;
-    --background-start-rgb: 0, 0, 0;
-    --background-end-rgb: 0, 0, 0;
+  .select-container select {
+    background-color: #1F2937; /* Tailwind dark mode background */
+    color: #E5E7EB; /* Tailwind light text color */
   }
 }
 
@@ -30,4 +32,48 @@ body {
   .text-balance {
     text-wrap: balance;
   }
+
+  .aspect-w-16 {
+    position: relative;
+    width: 100%;
+    padding-bottom: 56.25%; /* 16:9 Aspect Ratio */
+  }
+  .aspect-h-9 {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+  }
 }
+
+
+/* Additional custom styles for select element */
+.select-container select {
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  background-color: inherit;
+  color: inherit;
+}
+
+select[multiple] {
+  height: auto;
+  max-height: 150px;
+  overflow-y: auto;
+}
+
+.select-container {
+  position: relative;
+}
+
+.select-container::after {
+  content: '▼';
+  position: absolute;
+  top: 50%;
+  right: 10px;
+  transform: translateY(-50%);
+  pointer-events: none;
+}
+
+
