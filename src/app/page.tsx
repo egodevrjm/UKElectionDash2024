@@ -4,7 +4,7 @@ import './globals.css'; // Importing the CSS file
 
 import React, { useState, useEffect } from 'react';
 import { BarChart, Bar, XAxis, YAxis, Tooltip, Legend, ResponsiveContainer, Cell } from 'recharts';
-import { RefreshCcw, AlertTriangle, CheckCircle, Moon, Sun, Home, Newspaper, Tv } from 'lucide-react';
+import { RefreshCcw, AlertTriangle, CheckCircle, Moon, Sun, Home, Newspaper } from 'lucide-react';
 import ClientTime from './components/ClientTime';
 import HistoricalComparison from './components/HistoricalComparison';
 import KeyConstituencies from './components/KeyConstituencies';
@@ -42,13 +42,6 @@ interface Projections {
   [key: string]: Projection;
 }
 
-const liveStreams = [
-  { name: "Sky News", url: "https://www.youtube.com/embed/oJUvTVdTMyY" },
-  { name: "ITV News", url: "https://www.youtube.com/embed/Xu9DdrBCopA" },
-  { name: "TalkTV", url: "https://www.youtube.com/embed/DFYaNjzI1aI" },
-  { name: "GBNews", url: "https://www.youtube.com/embed/8WX6YL9JnLw" }
-];
-
 // Colour map for each party
 const partyColours: { [key: string]: string } = {
   Lab: '#DC241f',
@@ -75,7 +68,7 @@ const ElectionTracker: React.FC = () => {
   const [newsError, setNewsError] = useState<string | null>(null);
   const [darkMode, setDarkMode] = useState<boolean>(false);
   const [lastUpdated, setLastUpdated] = useState<string>(new Date().toISOString());
-  const [activeTab, setActiveTab] = useState<'results' | 'news' | 'live'>('results');
+  const [activeTab, setActiveTab] = useState<'results' | 'news'>('results');
 
   useEffect(() => {
     const fetchData = async () => {
@@ -174,17 +167,6 @@ const ElectionTracker: React.FC = () => {
             <Newspaper className="mr-2" size={18} />
             News Feed
           </button>
-          <button
-            onClick={() => setActiveTab('live')}
-            className={`flex items-center px-4 py-2 rounded-t-lg ${
-              activeTab === 'live'
-                ? 'bg-white dark:bg-gray-800 text-blue-600 dark:text-blue-300'
-                : 'bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300'
-            }`}
-          >
-            <Tv className="mr-2" size={18} />
-            Live Streams
-          </button>
         </div>
 
         {activeTab === 'results' && (
@@ -210,8 +192,7 @@ const ElectionTracker: React.FC = () => {
             </section>
 
             <section className="bg-white dark:bg-gray-800 p-4 rounded-lg shadow">
-             
-            <h2 className="text-xl font-semibold mb-4 text-blue-800 dark:text-blue-300">Add Seats</h2>
+              <h2 className="text-xl font-semibold mb-4 text-blue-800 dark:text-blue-300">Add Seats</h2>
               <div className="grid grid-cols-2 gap-4">
                 {Object.keys(seats).map((party) => (
                   <div key={party} className="flex flex-col">
@@ -236,111 +217,66 @@ const ElectionTracker: React.FC = () => {
               <KeyConstituencies />
             </section>
 
-            <section className="bg-white dark:bg-gray-800 p-4 rounded-lg shadow">
-              <h2 className="text-xl font-semibold mb-4 text-blue-800 dark:text-blue-300">Key Events</h2>
-              <input
-                type="text"
-                placeholder="Add key event..."
-                onKeyPress={(e: React.KeyboardEvent<HTMLInputElement>) => {
-                  if (e.key === 'Enter') {
-                    addKeyEvent((e.target as HTMLInputElement).value);
-                    (e.target as HTMLInputElement).value = '';
-                  }
-                }}
-                className="w-full p-2 border rounded mb-4 dark:bg-gray-700 dark:text-white dark:border-gray-600"
-              />
-              <ul className="list-disc pl-5 max-h-64 overflow-y-auto dark:text-white">
-                {keyEvents.map((event, index) => (
-                  <li key={index} className="mb-2">
-                    <span className="font-semibold">{event.time}:</span> {event.event}
-                  </li>
-                ))}
-              </ul>
-            </section>
-
-            <section className="bg-white dark:bg-gray-800 p-4 rounded-lg shadow">
-              <h2 className="text-xl font-semibold mb-4 text-blue-800 dark:text-blue-300">Projections vs. Results</h2>
-              <div className="grid grid-cols-2 gap-4">
-                {Object.entries(projections).map(([party, proj]) => (
-                  <div key={party} className="bg-gray-100 dark:bg-gray-700 p-3 rounded">
-                    <h3 className="font-semibold text-lg dark:text-white">{party}</h3>
-                    <div className="flex flex-col dark:text-gray-300">
-                      <span>Projected: {proj.projected}</span>
-                      <span>Current: {seats[party as keyof Seats]}</span>
-                      <span className="flex items-center mt-2">
-                        Status: 
-                        {seats[party as keyof Seats] >= proj.min && seats[party as keyof Seats] <= proj.max ? (
-                          <CheckCircle className="text-green-500 ml-2" />
-                        ) : (
-                          <AlertTriangle className="text-yellow-500 ml-2" />
-                        )}
-                      </span>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </section>
-          </main>
-        )}
-
-        {activeTab === 'news' && (
-          <div className="bg-white dark:bg-gray-800 p-4 rounded-lg shadow">
-            <div className="flex justify-between items-center mb-4">
-              <h2 className="text-xl font-semibold text-blue-800 dark:text-blue-300">Live News Feed</h2>
-              <button 
-                onClick={fetchNews} 
-                className="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition-colors flex items-center"
-              >
-                <RefreshCcw className="w-4 h-4 mr-2" />
-                Refresh News
-              </button>
-            </div>
-            {newsError ? (
-              <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative" role="alert">
-                <strong className="font-bold">Error!</strong>
-                <span className="block sm:inline"> {newsError}</span>
-              </div>
-            ) : (
-              <ul className="space-y-4">
-                {newsFeed.map((item, index) => (
-                  <li key={index} className="border-b border-gray-200 dark:border-gray-700 pb-4">
-                    <a href={item.link} target="_blank" rel="noopener noreferrer" className="text-blue-600 dark:text-blue-400 hover:underline text-lg font-semibold">
-                      {item.title}
-                    </a>
-                    <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">{new Date(item.pubDate).toLocaleString()}</p>
-                    <p className="mt-2 dark:text-gray-300">{item.description.replace(/<[^>]*>?/gm, '').slice(0, 150)}...</p>
-                  </li>
-                ))}
-              </ul>
-            )}
-          </div>
-        )}
-
-        {activeTab === 'live' && (
-          <div className="bg-white dark:bg-gray-800 p-4 rounded-lg shadow">
-            <h2 className="text-xl font-semibold mb-4 text-blue-800 dark:text-blue-300">Live Broadcasts</h2>
-            <div className="space-y-4">
-              {liveStreams.map((stream) => (
-                <div key={stream.name} className="relative aspect-w-16 aspect-h-9 overflow-hidden rounded-lg">
-                  <iframe
-                    src={stream.url}
-                    title={`${stream.name} Live Stream`}
-                    frameBorder="0"
-                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                    allowFullScreen
-                    className="absolute top-0 left-0 w-full h-full"
-                  ></iframe>
-                  <div className="absolute bottom-0 left-0 bg-black bg-opacity-50 text-white p-2">
-                    {stream.name}
-                  </div>
+<section className="bg-white dark:bg-gray-800 p-4 rounded-lg shadow">
+          <h2 className="text-xl font-semibold mb-4 text-blue-800 dark:text-blue-300">Projections vs. Results</h2>
+          <div className="grid grid-cols-2 gap-4">
+            {Object.entries(projections).map(([party, proj]) => (
+              <div key={party} className="bg-gray-100 dark:bg-gray-700 p-3 rounded">
+                <h3 className="font-semibold text-lg dark:text-white">{party}</h3>
+                <div className="flex flex-col dark:text-gray-300">
+                  <span>Projected: {proj.projected}</span>
+                  <span>Current: {seats[party as keyof Seats]}</span>
+                  <span className="flex items-center mt-2">
+                    Status: 
+                    {seats[party as keyof Seats] >= proj.min && seats[party as keyof Seats] <= proj.max ? (
+                      <CheckCircle className="text-green-500 ml-2" />
+                    ) : (
+                      <AlertTriangle className="text-yellow-500 ml-2" />
+                    )}
+                  </span>
                 </div>
-              ))}
-            </div>
+              </div>
+            ))}
           </div>
+        </section>
+      </main>
+    )}
+
+    {activeTab === 'news' && (
+      <div className="bg-white dark:bg-gray-800 p-4 rounded-lg shadow">
+        <div className="flex justify-between items-center mb-4">
+          <h2 className="text-xl font-semibold text-blue-800 dark:text-blue-300">Live News Feed</h2>
+          <button 
+            onClick={fetchNews} 
+            className="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition-colors flex items-center"
+          >
+            <RefreshCcw className="w-4 h-4 mr-2" />
+            Refresh News
+          </button>
+        </div>
+        {newsError ? (
+          <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative" role="alert">
+            <strong className="font-bold">Error!</strong>
+            <span className="block sm:inline"> {newsError}</span>
+          </div>
+        ) : (
+          <ul className="space-y-4">
+            {newsFeed.map((item, index) => (
+              <li key={index} className="border-b border-gray-200 dark:border-gray-700 pb-4">
+                <a href={item.link} target="_blank" rel="noopener noreferrer" className="text-blue-600 dark:text-blue-400 hover:underline text-lg font-semibold">
+                  {item.title}
+                </a>
+                <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">{new Date(item.pubDate).toLocaleString()}</p>
+                <p className="mt-2 dark:text-gray-300">{item.description.replace(/<[^>]*>?/gm, '').slice(0, 150)}...</p>
+              </li>
+            ))}
+          </ul>
         )}
       </div>
-    </div>
-  );
+    )}
+  </div>
+</div>
+);
 };
 
 export default ElectionTracker;
