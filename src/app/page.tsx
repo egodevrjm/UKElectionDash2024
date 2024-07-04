@@ -1,4 +1,6 @@
-'use client'
+'use client';
+
+import './globals.css'; // Importing the CSS file
 
 import React, { useState, useEffect } from 'react';
 import { BarChart, Bar, XAxis, YAxis, Tooltip, Legend, ResponsiveContainer, Cell } from 'recharts';
